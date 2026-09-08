@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "channel": "alpha",
+  "base_build": 5506,
+  "build": 5515,
+  "version": "0.1.0-alpha.55.15-pullable-city",
+  "title": "Alpha55.15 · 可卷城市交互重构",
+  "notes": "修复高密度城市物件大量不可卷、卷走后原地仍残留静态替身的问题。普通商品、水果、瓶罐、纸箱、塑料筐、自行车、踏板车、桌椅、托盘等改为低门槛可卷，并将近场动态交互硬预算提升到 1800；小物件使用轻量吸入/升空/环绕/抛飞链路，车辆和大型物件继续保留完整破坏物理。每个可见物件现在具有稳定 item_id 和对应 MultiMesh 槽位，升格为可卷对象时原槽位同步隐藏，避免视觉假物残留。语义物件与道路交通 props 分离管理，但会聚合注入龙卷风交互缓存。摆放系统同时改为道路语义 + 建筑外墙/店面双来源，店铺商品、餐饮桌椅、自行车位、售货机、配电箱、空调外机、箱筐和托盘优先从建筑轮廓生成。完整 3x3 涩谷实测：12173 栋建筑、15896 段道路、746 辆车辆；龙卷风附近 18385 个语义物件可见，其中 18163 个拥有一一对应可交互槽位，4755 个直接来自建筑/店面位置。Windows 严格 smoke、完整 3x3 涩谷大地图和 CityLevel 连续两次进入均已通过。Alpha48 龙卷风视觉保持不变。",
+  "mandatory": false,
+  "package": {
+    "kind": "patch",
+    "base_build": 5506,
+    "url": "https://github.com/viator-xie/storm-city-eater-updates/releases/download/build-5515/STORM_CITY_EATER_PATCH_5515.pck",
+    "sha256": "1d4c12918615540efb9258fef87e9ab89f2a0178fed8e5b9faf0c33c6609b6a3",
+    "bytes": 161408
+  }
+}
