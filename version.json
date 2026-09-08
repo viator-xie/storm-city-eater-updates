@@ -2,16 +2,16 @@
   "schema": 1,
   "channel": "alpha",
   "base_build": 5506,
-  "build": 5515,
-  "version": "0.1.0-alpha.55.15-pullable-city",
-  "title": "Alpha55.15 · 可卷城市交互重构",
-  "notes": "修复高密度城市物件大量不可卷、卷走后原地仍残留静态替身的问题。普通商品、水果、瓶罐、纸箱、塑料筐、自行车、踏板车、桌椅、托盘等改为低门槛可卷，并将近场动态交互硬预算提升到 1800；小物件使用轻量吸入/升空/环绕/抛飞链路，车辆和大型物件继续保留完整破坏物理。每个可见物件现在具有稳定 item_id 和对应 MultiMesh 槽位，升格为可卷对象时原槽位同步隐藏，避免视觉假物残留。语义物件与道路交通 props 分离管理，但会聚合注入龙卷风交互缓存。摆放系统同时改为道路语义 + 建筑外墙/店面双来源，店铺商品、餐饮桌椅、自行车位、售货机、配电箱、空调外机、箱筐和托盘优先从建筑轮廓生成。完整 3x3 涩谷实测：12173 栋建筑、15896 段道路、746 辆车辆；龙卷风附近 18385 个语义物件可见，其中 18163 个拥有一一对应可交互槽位，4755 个直接来自建筑/店面位置。Windows 严格 smoke、完整 3x3 涩谷大地图和 CityLevel 连续两次进入均已通过。更新检测入口改为稳定 raw manifest，并保留旧 Release manifest 兼容桥，避免 releases/latest 重定向或旧 asset 替换窗口导致检查更新失败。Alpha48 龙卷风视觉保持不变。",
+  "build": 5516,
+  "version": "0.1.0-alpha.55.16-vortex-arena",
+  "title": "Alpha55.16 · 龙卷风大作战",
+  "notes": "城市模式重构为龙卷风竞技循环：玩家龙卷风质量可持续增长，体型不再在 EF6 封顶，测试质量 10000 时半径可超过 45 米并继续增长；EF 等级继续作为可卷物体门槛，完整 3x3 涩谷保留 231 栋可整栋卷起的建筑。关闭旧高密道路物品与 1200 万逻辑物品运行时，改为约 120 个随机稀疏可卷物件，最高 150 个并动态补充。新增 6 个 AI 龙卷风，初始质量覆盖约 8/18/34/58/96/155 六档，会巡游、追击或逃离。玩家与敌人新增质量、最大血量、当前血量、评分、击杀数；质量越大最大血量与战斗强度越高。龙卷风风圈接触后双方持续扣血并损失质量，击败敌人可获得评分和部分质量，死亡后可重组；新增竞技 HUD 与排行榜。完整地图保持 12173 栋建筑、15896 段道路，Alpha48 龙卷风视觉保持不变。Windows 严格 smoke、完整 3x3 涩谷大地图及 CityLevel 连续两次进入均已通过。",
   "mandatory": false,
   "package": {
     "kind": "patch",
     "base_build": 5506,
-    "url": "https://github.com/viator-xie/storm-city-eater-updates/releases/download/build-5515/STORM_CITY_EATER_PATCH_5515.pck",
-    "sha256": "ff73729c675527ae2b91793e805bfa60d37c1230d96cb60475473595363f02a7",
-    "bytes": 161568
+    "url": "https://github.com/viator-xie/storm-city-eater-updates/releases/download/build-5516/STORM_CITY_EATER_PATCH_5516.pck",
+    "sha256": "9c816a41583a7b7e6069e371223719de0d7fdb91a708b26436e7ba1b49d8ce8c",
+    "bytes": 201036
   }
 }
