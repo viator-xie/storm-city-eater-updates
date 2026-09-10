@@ -2,16 +2,16 @@
   "schema": 1,
   "channel": "alpha",
   "base_build": 5506,
-  "build": 5516,
-  "version": "0.1.0-alpha.55.16-vortex-arena",
-  "title": "Alpha55.16 · 龙卷风大作战",
-  "notes": "城市模式重构为龙卷风竞技循环：玩家龙卷风质量可持续增长，体型不再在 EF6 封顶，测试质量 10000 时半径可超过 45 米并继续增长；EF 等级继续作为可卷物体门槛，完整 3x3 涩谷保留 231 栋可整栋卷起的建筑。关闭旧高密道路物品与 1200 万逻辑物品运行时，改为约 120 个随机稀疏可卷物件，最高 150 个并动态补充。新增 6 个 AI 龙卷风，初始质量覆盖约 8/18/34/58/96/155 六档，会巡游、追击或逃离。玩家与敌人新增质量、最大血量、当前血量、评分、击杀数；质量越大最大血量与战斗强度越高。龙卷风风圈接触后双方持续扣血并损失质量，击败敌人可获得评分和部分质量，死亡后可重组；新增竞技 HUD 与排行榜。完整地图保持 12173 栋建筑、15896 段道路，Alpha48 龙卷风视觉保持不变。Windows 严格 smoke、完整 3x3 涩谷大地图及 CityLevel 连续两次进入均已通过。",
+  "build": 5517,
+  "version": "0.1.0-alpha.55.17-pc-sync",
+  "title": "Alpha55.17 · PC主线同步",
+  "notes": "同步当前主工程到 Windows 热更新通道：保留 Alpha55.16 龙卷风大作战核心，并合入移动端竖屏兼容基础、稳定更新入口与 Android ETC2/ASTC 纹理兼容设置。Windows 仍保持桌面横屏与原键鼠控制，不启用手机自动前进。此版本用于解决 PC 客户端停留在 5516、无法获得当前主线代码的问题；玩家刚反馈的 NPC 追击过强/穿墙、资源持续生成、初始公平性、部分物件可卷性与场景清理将作为下一轮玩法修复继续处理。",
   "mandatory": false,
   "package": {
     "kind": "patch",
     "base_build": 5506,
-    "url": "https://github.com/viator-xie/storm-city-eater-updates/releases/download/build-5516/STORM_CITY_EATER_PATCH_5516.pck",
-    "sha256": "9c816a41583a7b7e6069e371223719de0d7fdb91a708b26436e7ba1b49d8ce8c",
-    "bytes": 201036
+    "url": "https://github.com/viator-xie/storm-city-eater-updates/releases/download/build-5517/STORM_CITY_EATER_PATCH_5517.pck",
+    "sha256": "df986c1fa5967e411929f32dfb39ba431272fb2b7c7ff45891954f819cfa8ddc",
+    "bytes": 218492
   }
 }
