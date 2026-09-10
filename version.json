@@ -2,16 +2,16 @@
   "schema": 1,
   "channel": "alpha",
   "base_build": 5506,
-  "build": 5517,
-  "version": "0.1.0-alpha.55.17-pc-sync",
-  "title": "Alpha55.17 · PC主线同步",
-  "notes": "同步当前主工程到 Windows 热更新通道：保留 Alpha55.16 龙卷风大作战核心，并合入移动端竖屏兼容基础、稳定更新入口与 Android ETC2/ASTC 纹理兼容设置。Windows 仍保持桌面横屏与原键鼠控制，不启用手机自动前进。此版本用于解决 PC 客户端停留在 5516、无法获得当前主线代码的问题；玩家刚反馈的 NPC 追击过强/穿墙、资源持续生成、初始公平性、部分物件可卷性与场景清理将作为下一轮玩法修复继续处理。",
+  "build": 5518,
+  "version": "0.1.0-alpha.55.18-arena-fairness",
+  "title": "Alpha55.18 · 竞技体验修复",
+  "notes": "针对龙卷风大作战首轮试玩问题集中修复：竞技场关闭旧 TokyoSceneDetail、高密道路物与 1200 万物品运行时，只保留真实东京建筑/道路、可卷建筑和少量玩法资源，避免场景杂乱及大量看似可卷但只是装饰的对象。随机资源改为基于真实 OSM 道路/路缘/车道位置生成，玩家周围维持约 40 个当前 EF 等级真正能卷的食物；资源被吃掉后每约 0.7 秒按批次持续补充，并在全局池达到上限时优先回收远处/不可食用物，为玩家附近腾出资源位。开局 Tier1 随机食物测试为 40/40 可卷，高阶车辆只在成长到对应阶段后进入随机池。6 个 NPC 龙卷风开局质量均低于玩家，不再开局碾压；AI 改为优先找食物、巡游和避让，仅在近距离、明显强于玩家、视线无建筑遮挡且冷却允许时短暂追击。NPC 移动、滑墙和战斗推力统一加入建筑阻挡，龙卷风之间也不能隔着建筑互相扣血。保留无限质量成长、血量/质量互耗、击杀评分、整栋建筑可卷、PC 键鼠与 Android 竖屏自动前进/触摸转向。Alpha48 龙卷风视觉未改。Windows 严格 smoke、完整 3x3 涩谷、资源补充专项、NPC 穿墙专项以及 Android ARM64 导出均通过。",
   "mandatory": false,
   "package": {
     "kind": "patch",
     "base_build": 5506,
-    "url": "https://github.com/viator-xie/storm-city-eater-updates/releases/download/build-5517/STORM_CITY_EATER_PATCH_5517.pck",
-    "sha256": "df986c1fa5967e411929f32dfb39ba431272fb2b7c7ff45891954f819cfa8ddc",
-    "bytes": 218492
+    "url": "https://github.com/viator-xie/storm-city-eater-updates/releases/download/build-5518/STORM_CITY_EATER_PATCH_5518.pck",
+    "sha256": "911e1a9227b78a7326d89da969d6294e5937df3d2518264de1b08b3099c9fe8e",
+    "bytes": 238632
   }
 }
