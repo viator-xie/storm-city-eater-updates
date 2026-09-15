@@ -1,4 +1,4 @@
-name: TEMP Bridge Full 5506 Client
+name: TEMP Private Source Checkout Probe
 
 on:
   push:
@@ -10,22 +10,23 @@ permissions:
   contents: read
 
 jobs:
-  bridge:
+  probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
-      - name: Download published full client
+      - name: Checkout private source main
+        uses: actions/checkout@v4
+        with:
+          repository: viator-xie/-
+          ref: main
+          token: ${{ secrets.UPDATE_REPO_TOKEN }}
+          path: source
+      - name: Verify Alpha55.22 source
         shell: bash
         run: |
           set -euo pipefail
-          url="https://github.com/viator-xie/storm-city-eater-updates/releases/download/build-5506/STORM_CITY_EATER_ALPHA55_6_FULL.zip"
-          curl -fL --retry 5 --retry-delay 2 "$url" -o STORM_CITY_EATER_ALPHA55_6_FULL.zip
-          echo "bd86922466ec0628d930f6d5428a24c09669295a0f734ba8b948791e57a479ba  STORM_CITY_EATER_ALPHA55_6_FULL.zip" | sha256sum -c -
-          test "$(stat -c%s STORM_CITY_EATER_ALPHA55_6_FULL.zip)" = "42813773"
-      - name: Upload bridge artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: storm-5506-full-client-bridge
-          path: STORM_CITY_EATER_ALPHA55_6_FULL.zip
-          retention-days: 1
-          if-no-files-found: error
+          test -s source/project.godot
+          test -s source/scripts/current_build_stamp.gd
+          grep -q 'BUILT_BUILD := 5522' source/scripts/current_build_stamp.gd
+          grep -q '0.1.0-alpha.55.22-contested-pull' source/project.godot
+          echo PRIVATE_SOURCE_5522_CHECKOUT_PASS
