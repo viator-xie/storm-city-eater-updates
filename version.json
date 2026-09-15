@@ -2,16 +2,16 @@
   "schema": 1,
   "channel": "alpha",
   "base_build": 5506,
-  "build": 5518,
-  "version": "0.1.0-alpha.55.18-arena-fairness",
-  "title": "Alpha55.18 · 竞技体验修复",
-  "notes": "针对龙卷风大作战首轮试玩问题集中修复：竞技场关闭旧 TokyoSceneDetail、高密道路物与 1200 万物品运行时，只保留真实东京建筑/道路、可卷建筑和少量玩法资源，避免场景杂乱及大量看似可卷但只是装饰的对象。随机资源改为基于真实 OSM 道路/路缘/车道位置生成，玩家周围维持约 40 个当前 EF 等级真正能卷的食物；资源被吃掉后每约 0.7 秒按批次持续补充，并在全局池达到上限时优先回收远处/不可食用物，为玩家附近腾出资源位。开局 Tier1 随机食物测试为 40/40 可卷，高阶车辆只在成长到对应阶段后进入随机池。6 个 NPC 龙卷风开局质量均低于玩家，不再开局碾压；AI 改为优先找食物、巡游和避让，仅在近距离、明显强于玩家、视线无建筑遮挡且冷却允许时短暂追击。NPC 移动、滑墙和战斗推力统一加入建筑阻挡，龙卷风之间也不能隔着建筑互相扣血。保留无限质量成长、血量/质量互耗、击杀评分、整栋建筑可卷、PC 键鼠与 Android 竖屏自动前进/触摸转向。Alpha48 龙卷风视觉未改。Windows 严格 smoke、完整 3x3 涩谷、资源补充专项、NPC 穿墙专项以及 Android ARM64 导出均通过。",
+  "build": 5522,
+  "version": "0.1.0-alpha.55.22-contested-pull",
+  "title": "Alpha55.22 · 龙卷风大作战公平争抢",
+  "notes": "从公开的5518直接升级到5522：补齐龙卷风大作战竞技闭环，包括PC 24个NPC、局部人口流送、NPC互相觅食/追弱避强、真实排行榜、世界空间血条与威胁颜色、死亡节点复用、玩家与NPC重生保护、224个以内的动态稀疏资源生态、整栋建筑计分、击败后共享死亡残骸及NPC抢夺残骸。55.22进一步修复多人同时卷同一地面物体时的调用顺序偏差：同一物理帧达到起飞阈值的候选在帧末统一仲裁，依次按吸力积累、当前风压、距离和稳定ID决定归属，避免脚本先执行的一方天然占优。Alpha48近距离龙卷风视觉继续保持锁定。",
   "mandatory": false,
   "package": {
     "kind": "patch",
     "base_build": 5506,
-    "url": "https://github.com/viator-xie/storm-city-eater-updates/releases/download/build-5518/STORM_CITY_EATER_PATCH_5518.pck",
-    "sha256": "911e1a9227b78a7326d89da969d6294e5937df3d2518264de1b08b3099c9fe8e",
-    "bytes": 238632
+    "url": "https://github.com/viator-xie/storm-city-eater-updates/releases/download/build-5522/STORM_CITY_EATER_PATCH_5522.pck",
+    "sha256": "f8d1f771c242f3a23819812a85e041e5a13bf40836f8478a319792339b6ca7f3",
+    "bytes": 328192
   }
 }
