@@ -6,7 +6,7 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/publish-5522-hosted.yml"
-      - "temp/delta5518_to_5522_sources.tar.gz"
+      - "temp/delta5522.b64.part*"
 
 permissions:
   contents: write
@@ -52,7 +52,11 @@ jobs:
           export GODOT_SILENCE_ROOT_WARNING=1
           tools/gdre/gdre_tools.x86_64 --headless --recover=build/hotupdate/base5506.pck --output=work/project > build/hotupdate/recover-base.log 2>&1
           tools/gdre/gdre_tools.x86_64 --headless --recover=build/hotupdate/patch5518.pck --output=work/project > build/hotupdate/recover-5518.log 2>&1
-          tar -xzf temp/delta5518_to_5522_sources.tar.gz -C work/project
+          cat temp/delta5522.b64.part* > /tmp/delta5522.b64
+          test "$(wc -c < /tmp/delta5522.b64)" -eq 34648
+          base64 -d /tmp/delta5522.b64 > /tmp/delta5518_to_5522_sources.tar.gz
+          echo "413bc95b7f1bf651c2390ab0fca2900991f29538736c4fce43917dfd029e8c53  /tmp/delta5518_to_5522_sources.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/delta5518_to_5522_sources.tar.gz -C work/project
           cat > work/project/export_presets.cfg <<'EOF'
           [preset.0]
           name="Windows Desktop"
