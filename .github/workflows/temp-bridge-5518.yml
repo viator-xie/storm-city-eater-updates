@@ -1,0 +1,31 @@
+name: TEMP Bridge 5518 PCK
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/temp-bridge-5518.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Download published cumulative patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="https://github.com/viator-xie/storm-city-eater-updates/releases/download/build-5518/STORM_CITY_EATER_PATCH_5518.pck"
+          curl -fL --retry 5 --retry-delay 2 "$url" -o STORM_CITY_EATER_PATCH_5518.pck
+          echo "911e1a9227b78a7326d89da969d6294e5937df3d2518264de1b08b3099c9fe8e  STORM_CITY_EATER_PATCH_5518.pck" | sha256sum -c -
+          test "$(stat -c%s STORM_CITY_EATER_PATCH_5518.pck)" = "238632"
+      - name: Upload bridge artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: storm-5518-pck-bridge
+          path: STORM_CITY_EATER_PATCH_5518.pck
+          retention-days: 1
+          if-no-files-found: error
