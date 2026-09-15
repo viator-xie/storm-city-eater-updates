@@ -1,4 +1,4 @@
-name: TEMP Private Source Checkout Probe
+name: TEMP Bridge GDRE Linux
 
 on:
   push:
@@ -10,23 +10,21 @@ permissions:
   contents: read
 
 jobs:
-  probe:
+  bridge:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
-      - name: Checkout private source main
-        uses: actions/checkout@v4
-        with:
-          repository: viator-xie/-
-          ref: main
-          token: ${{ secrets.UPDATE_REPO_TOKEN }}
-          path: source
-      - name: Verify Alpha55.22 source
+      - name: Download GDRE Tools Linux
         shell: bash
         run: |
           set -euo pipefail
-          test -s source/project.godot
-          test -s source/scripts/current_build_stamp.gd
-          grep -q 'BUILT_BUILD := 5522' source/scripts/current_build_stamp.gd
-          grep -q '0.1.0-alpha.55.22-contested-pull' source/project.godot
-          echo PRIVATE_SOURCE_5522_CHECKOUT_PASS
+          url="https://github.com/GDRETools/gdsdecomp/releases/download/v2.6.4/GDRE_tools-v2.6.4-linux.zip"
+          curl -fL --retry 5 --retry-delay 2 "$url" -o GDRE_tools-v2.6.4-linux.zip
+          echo "eda8cb09e64a060728fa371aa80ae148d3c5584a7de2f553699936daa84e7b4e  GDRE_tools-v2.6.4-linux.zip" | sha256sum -c -
+      - name: Upload bridge artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gdre-tools-linux-bridge
+          path: GDRE_tools-v2.6.4-linux.zip
+          retention-days: 1
+          if-no-files-found: error
