@@ -1,0 +1,92 @@
+name: Validate Public Alpha55.22 Patch
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/validate-5522-public.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-public-patch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Godot 4.7.1 and exact public packs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p tools/godot verify/packs verify/harness
+          curl -fL --retry 5 --retry-delay 2 "https://github.com/godotengine/godot-builds/releases/download/4.7.1-stable/Godot_v4.7.1-stable_linux.x86_64.zip" -o tools/godot.zip
+          unzip -q tools/godot.zip -d tools/godot
+          chmod +x tools/godot/Godot_v4.7.1-stable_linux.x86_64
+          curl -fL --retry 5 --retry-delay 2 "https://github.com/viator-xie/storm-city-eater-updates/releases/download/base-5506/STORM_CITY_EATER_BASE_5506.pck" -o verify/packs/base5506.pck
+          curl -fL --retry 5 --retry-delay 2 "https://github.com/viator-xie/storm-city-eater-updates/releases/download/build-5522/STORM_CITY_EATER_PATCH_5522.pck" -o verify/packs/patch5522.pck
+          echo "f14bc49906ef96f4b25ff84fec8c330ba7e0c8ec3ccaf24decd09a31de4d8b2e  verify/packs/base5506.pck" | sha256sum -c -
+          echo "f8d1f771c242f3a23819812a85e041e5a13bf40836f8478a319792339b6ca7f3  verify/packs/patch5522.pck" | sha256sum -c -
+
+      - name: Mount exact public patch and force-load CityLevel chain
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > verify/harness/project.godot <<'EOF'
+          config_version=5
+          [application]
+          config/name="Alpha5522PublicVerifier"
+          [rendering]
+          renderer/rendering_method="gl_compatibility"
+          EOF
+          cat > verify/harness/verify_public_patch.gd <<'EOF'
+          extends SceneTree
+
+          func _init() -> void:
+              var root_dir := ProjectSettings.globalize_path("res://").get_base_dir().get_base_dir()
+              var base_path := root_dir.path_join("packs/base5506.pck")
+              var patch_path := root_dir.path_join("packs/patch5522.pck")
+              if not ProjectSettings.load_resource_pack(base_path, true):
+                  push_error("PUBLIC5522_BASE_MOUNT_FAIL")
+                  quit(10)
+                  return
+              if not ProjectSettings.load_resource_pack(patch_path, true):
+                  push_error("PUBLIC5522_PATCH_MOUNT_FAIL")
+                  quit(11)
+                  return
+              print("PUBLIC5522_PACKS_MOUNTED")
+              var v5 = load("res://scripts/standalone_level_safe_boot_v5.gd")
+              if v5 == null:
+                  push_error("PUBLIC5522_SAFE_BOOT_V5_LOAD_FAIL")
+                  quit(12)
+                  return
+              var v6 = load("res://scripts/standalone_level_safe_boot_v6.gd")
+              if v6 == null:
+                  push_error("PUBLIC5522_SAFE_BOOT_V6_LOAD_FAIL")
+                  quit(13)
+                  return
+              var scene = load("res://scenes/CityLevel.tscn")
+              if scene == null or not (scene is PackedScene):
+                  push_error("PUBLIC5522_CITYLEVEL_LOAD_FAIL")
+                  quit(14)
+                  return
+              var instance = scene.instantiate()
+              if instance == null:
+                  push_error("PUBLIC5522_CITYLEVEL_INSTANTIATE_FAIL")
+                  quit(15)
+                  return
+              instance.free()
+              print("PUBLIC5522_CITYLEVEL_RESOURCE_PASS")
+              print("PUBLIC5522_EXACT_PATCH_PASS")
+              quit(0)
+          EOF
+          G=tools/godot/Godot_v4.7.1-stable_linux.x86_64
+          "$G" --headless --path verify/harness --script res://verify_public_patch.gd 2>&1 | tee verify/public5522.log
+          grep -q 'PUBLIC5522_PACKS_MOUNTED' verify/public5522.log
+          grep -q 'PUBLIC5522_CITYLEVEL_RESOURCE_PASS' verify/public5522.log
+          grep -q 'PUBLIC5522_EXACT_PATCH_PASS' verify/public5522.log
+          if grep -E 'SCRIPT ERROR:|Parse Error:|Compile Error:|Failed to load script|PUBLIC5522_.*_FAIL' verify/public5522.log; then
+            exit 1
+          fi
